@@ -1,5 +1,5 @@
 # shoppingcartsystem
-# step 1: Install java 1.7 or above
+# step 1: Install java 1.17 or above
 # Step 2: Install maven
 # step 3: clone the project
 # step 4: Run the project
