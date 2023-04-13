@@ -1,10 +1,10 @@
 steps:
-  - name: 3.6-openjdk-17
+  - name: maven:3.6.3-openjdk-17
     entrypoint: mvn
     args: ['--version']
 
   # build production files
-  - name: 3.6-openjdk-17
+  - name: maven:3.6.3-openjdk-17
     entrypoint: mvn
     args: [ 'package','-Dmaven.test.skip=true' ]
 
