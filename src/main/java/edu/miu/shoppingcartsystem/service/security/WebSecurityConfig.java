@@ -1,8 +1,8 @@
-package edu.miu.shoppingcartsystem.security;
+package edu.miu.shoppingcartsystem.service.security;
 
-import edu.miu.shoppingcartsystem.security.jwt.AuthEntryPointJwt;
-import edu.miu.shoppingcartsystem.security.jwt.AuthTokenFilter;
-import edu.miu.shoppingcartsystem.security.services.UserDetailsServiceImpl;
+import edu.miu.shoppingcartsystem.service.security.jwt.AuthEntryPointJwt;
+import edu.miu.shoppingcartsystem.service.security.jwt.AuthTokenFilter;
+import edu.miu.shoppingcartsystem.service.security.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
