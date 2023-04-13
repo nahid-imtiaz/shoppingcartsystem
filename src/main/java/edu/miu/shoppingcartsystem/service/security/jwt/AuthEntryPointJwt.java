@@ -1,4 +1,4 @@
-package edu.miu.shoppingcartsystem.security.jwt;
+package edu.miu.shoppingcartsystem.service.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
