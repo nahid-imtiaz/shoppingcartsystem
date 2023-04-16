@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
+import java.util.List;
 
 @RestController
 @RequestMapping("/cartItem")
@@ -19,6 +20,11 @@ public class CartItemController {
     public ResponseEntity<CartItem> getCartItemById(@PathVariable int id){
         Optional<CartItem> cartItem = cartItemService.getCartItemById(id);
         return cartItem.map(ResponseEntity::ok).orElseGet(()->ResponseEntity.notFound().build());
+    }
+    @GetMapping("/order/{id}")
+    public ResponseEntity<List<CartItem>> getCartItemsByOrderId(@PathVariable int orderId){
+        List<CartItem> cartItems = cartItemService.getCartItemsByOrderId(orderId);
+        return ResponseEntity.ok(cartItems);
     }
 
     @PostMapping()

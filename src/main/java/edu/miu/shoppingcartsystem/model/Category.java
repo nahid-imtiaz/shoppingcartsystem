@@ -1,10 +1,17 @@
 package edu.miu.shoppingcartsystem.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "categories")
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class Category {
 
     @Id
