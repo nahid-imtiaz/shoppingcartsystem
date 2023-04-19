@@ -3,6 +3,7 @@ package edu.miu.shoppingcartsystem.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.AuthorizationScope;
@@ -39,11 +40,8 @@ public class SwaggerConfig {
                 .securityContexts(Arrays.asList(securityContext()))
                 .securitySchemes(Arrays.asList(apiKey()))
                 .select()
-
-                //.apis(RequestHandlerSelectors.basePackage("edu.miu.shoppingcartsystem.controller"))
-                //.build();
-                .paths(regex("/*.*")).build();
-
+                .apis(RequestHandlerSelectors.basePackage("edu.miu.shoppingcartsystem.controller"))
+                .build();
     }
 
     public ApiInfo apiInfo(){
