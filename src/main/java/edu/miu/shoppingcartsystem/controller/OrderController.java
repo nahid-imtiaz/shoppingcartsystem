@@ -32,6 +32,7 @@ public class OrderController {
 
         List<CartItem> cList = orderRequest.getCartItemList();
         double sum = cList.stream().mapToDouble(c->c.getPrice() * c.getQuantity()).sum();
+        //make rest call to payment getway with the payment info
         orderRequest.setTotalPrice(sum);
         Order order = orderService.createOrder(orderRequest);
         cList.stream().map(c -> {c.setOrder(order);

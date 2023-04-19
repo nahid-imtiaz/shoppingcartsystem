@@ -13,12 +13,11 @@ import java.util.List;
 @Setter
 @Getter
 public class OrderRequest {
-    private String address;
+    private AddressRequest address;
     private String phone;
     private double totalPrice;
     private User user;
-
     private List<CartItem> cartItemList;
-
+    private PaymentInfo paymentInfo;
 
 }
