@@ -1,5 +1,7 @@
 package edu.miu.shoppingcartsystem.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -18,10 +20,12 @@ public class Product {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
+    @JsonIgnore
     private Category category;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     public Long getId() {
