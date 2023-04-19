@@ -1,0 +1,13 @@
+steps:
+  - name: maven:3.6.3-openjdk-17
+    entrypoint: mvn
+    args: ['--version']
+
+  # build production files
+  - name: maven:3.6.3-openjdk-17
+    entrypoint: mvn
+    args: [ 'package','-Dmaven.test.skip=true' ]
+
+  # Deploy to google cloud app engine
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: ['app', 'deploy', '--version=prod']
