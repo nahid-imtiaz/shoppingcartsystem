@@ -96,6 +96,8 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 */
             .antMatchers("/**").permitAll()
             .antMatchers(HttpMethod.GET, "/products/**").permitAll()
+        .antMatchers("/orders/**").permitAll()
+        .antMatchers(HttpMethod.GET, "/products/**").permitAll()
         .anyRequest().authenticated();
     
     http.authenticationProvider(authenticationProvider());
