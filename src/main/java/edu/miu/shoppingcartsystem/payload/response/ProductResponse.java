@@ -13,7 +13,7 @@ public class ProductResponse {
         this.name = p.getName();
         this.image = p.getImage();
         this.actualPrice = p.getActualPrice();
-        this.sellingPrice = p.getActualPrice();;
+        this.sellingPrice = p.getSellingPrice();
         this.quantity = p.getQuantity();
         this.isActive = p.getActive();
 

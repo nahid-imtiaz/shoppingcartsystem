@@ -6,6 +6,7 @@ import edu.miu.shoppingcartsystem.model.User;
 import edu.miu.shoppingcartsystem.repository.ProductRepository;
 import edu.miu.shoppingcartsystem.service.security.LoggedInUserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,6 +44,20 @@ public class ProductService {
 
     public void deleteProductById(Long id) {
         productRepository.deleteById(id);
+    }
+
+    public Product updateProduct(Product updateProduct) {
+
+        Optional<User> currentUser = loggedInUserUtil.getCurrentUser();
+        if(currentUser.isPresent()){
+            updateProduct.setUser(currentUser.get());
+        }
+
+        Optional<Category> category = categoryService.getCategoryById(updateProduct.getCategory().getId());
+        if(currentUser.isPresent()) updateProduct.setCategory(category.get());
+        productRepository.save(updateProduct);
+
+        return updateProduct;
     }
 }
 
