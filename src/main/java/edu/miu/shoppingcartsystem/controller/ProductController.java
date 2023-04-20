@@ -55,12 +55,12 @@ public class ProductController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('VENDOR') or hasRole('ADMIN')")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
+    public ResponseEntity<ProductResponse> updateProduct(@PathVariable Long id, @RequestBody Product product) {
         Optional<Product> existingProduct = productService.getProductById(id);
         if (existingProduct.isPresent()) {
             product.setId(id);
-            Product updatedProduct = productService.saveProduct(product);
-            return ResponseEntity.ok(updatedProduct);
+            Product updatedProduct = productService.updateProduct(product);
+            return ResponseEntity.ok(new ProductResponse(updatedProduct));
         } else {
             return ResponseEntity.notFound().build();
         }
