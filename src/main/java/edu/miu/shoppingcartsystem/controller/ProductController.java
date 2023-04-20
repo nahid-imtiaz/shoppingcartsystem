@@ -43,14 +43,14 @@ public class ProductController {
 
     @PostMapping
     @PreAuthorize("hasRole('VENDOR') or hasRole('ADMIN')")
-    public ResponseEntity<Product> saveProduct(@RequestBody Product product) {
+    public ResponseEntity<ProductResponse> saveProduct(@RequestBody Product product) {
         Product savedProduct = productService.saveProduct(product);
         if (savedProduct == null){
             ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Product Couldn't be created !!"));
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedProduct);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ProductResponse(savedProduct));
     }
 
     @PutMapping("/{id}")
