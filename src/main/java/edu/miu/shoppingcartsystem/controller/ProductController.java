@@ -77,5 +77,34 @@ public class ProductController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PutMapping("/activateProduct/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Boolean activateProduct(@PathVariable Long id){
+        Optional<Product> product1 = productService.getProductById(id);
+        if (product1.isPresent()) {
+                product1.get().setActive(true);
+                productService.saveProduct(product1.get());
+                return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    @PutMapping("/deactivateProduct/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Boolean deactivateProduct(@PathVariable Long id){
+        Optional<Product> product1 = productService.getProductById(id);
+        if (product1.isPresent()) {
+            product1.get().setActive(false);
+            productService.saveProduct(product1.get());
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
 }
 
