@@ -1,7 +1,10 @@
 package edu.miu.shoppingcartsystem.service;
 
+import edu.miu.shoppingcartsystem.model.Category;
 import edu.miu.shoppingcartsystem.model.Product;
+import edu.miu.shoppingcartsystem.model.User;
 import edu.miu.shoppingcartsystem.repository.ProductRepository;
+import edu.miu.shoppingcartsystem.service.security.LoggedInUserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +17,11 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private LoggedInUserUtil loggedInUserUtil;
+    @Autowired
+    private CategoryService categoryService;
+
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
@@ -23,7 +31,14 @@ public class ProductService {
     }
 
     public Product saveProduct(Product product) {
-        return productRepository.save(product);
+
+    Optional<User> currentUser = loggedInUserUtil.getCurrentUser();
+      if(currentUser.isPresent()){
+          product.setUser(currentUser.get());
+          return productRepository.save(product);
+      }
+      else
+          return null;
     }
 
     public void deleteProductById(Long id) {
