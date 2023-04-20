@@ -16,8 +16,8 @@ public class ReportController {
     private ReportService reportService;
 
     @GetMapping(value = "/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
-    public ResponseEntity<byte[]> downloadInvoice() throws JRException, IOException {
-        return reportService.downloadInvoice();
+    public ResponseEntity<byte[]> downloadInvoice1() throws JRException, IOException {
+        return reportService.downloadInvoice1();
 
     }
 }
