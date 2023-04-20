@@ -1,6 +1,8 @@
 package edu.miu.shoppingcartsystem.controller;
 
 import edu.miu.shoppingcartsystem.model.Product;
+import edu.miu.shoppingcartsystem.payload.response.MessageResponse;
+import edu.miu.shoppingcartsystem.payload.response.ProductResponse;
 import edu.miu.shoppingcartsystem.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,8 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @CrossOrigin
@@ -20,21 +21,35 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping
-    public ResponseEntity<List<Product>> getAllProducts() {
+    public ResponseEntity<List<ProductResponse>> getAllProducts() {
         List<Product> products = productService.getAllProducts();
-        return ResponseEntity.ok(products);
+        List<ProductResponse> fr= new ArrayList<ProductResponse>();
+        for(Product p: products){
+            fr.add(new ProductResponse(p));
+        }
+        return ResponseEntity.ok(fr);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+    public ResponseEntity<ProductResponse> getProductById(@PathVariable Long id) {
         Optional<Product> product = productService.getProductById(id);
-        return product.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        if (product.isPresent()) {
+            ProductResponse productResponse = new ProductResponse(product.get());
+            return ResponseEntity.ok(productResponse);
+        }else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping
     @PreAuthorize("hasRole('VENDOR') or hasRole('ADMIN')")
     public ResponseEntity<Product> saveProduct(@RequestBody Product product) {
         Product savedProduct = productService.saveProduct(product);
+        if (savedProduct == null){
+            ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Product Couldn't be created !!"));
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body(savedProduct);
     }
 
