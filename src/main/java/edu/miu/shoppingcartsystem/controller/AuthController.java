@@ -33,6 +33,8 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+
+  boolean isVendor=false;
   @Autowired
   AuthenticationManager authenticationManager;
 
@@ -75,6 +77,7 @@ public class AuthController {
 
   @PostMapping("/signup")
   public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+    isVendor=false;
     if (userRepository.existsByUsername(signUpRequest.getUsername())) {
       return ResponseEntity
           .badRequest()
@@ -94,6 +97,7 @@ public class AuthController {
 
     Set<String> strRoles = signUpRequest.getRole();
     Set<Role> roles = new HashSet<>();
+    boolean isVendorAdmin;
 
     if (strRoles == null) {
       Role userRole = roleRepository.findByName(ERole.ROLE_USER)
@@ -112,6 +116,7 @@ public class AuthController {
           Role modRole = roleRepository.findByName(ERole.ROLE_VENDOR)
               .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
           roles.add(modRole);
+          isVendor=true;
 
           break;
         default:
@@ -125,10 +130,7 @@ public class AuthController {
     user.setRoles(roles);
     userRepository.save(user);
 
-    //send password
-    Boolean notVendor = user.getRoles().stream().filter(r->r.getName().equals("vendor")).collect(Collectors.toList()).isEmpty();
-
-    if(!notVendor){
+    if(isVendor){
 //      private String recipient;
 //      private String msgBody;
 //      private String subject;
