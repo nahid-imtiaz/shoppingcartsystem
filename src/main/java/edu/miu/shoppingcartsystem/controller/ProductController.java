@@ -21,6 +21,7 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<ProductResponse>> getAllProducts() {
         List<Product> products = productService.getAllProducts();
         List<ProductResponse> fr= new ArrayList<ProductResponse>();
@@ -89,6 +90,16 @@ public class ProductController {
         } else {
             return false;
         }
+    }
+
+    @GetMapping("/activeProducts")
+    public ResponseEntity<List<ProductResponse>> getAllActiveProducts() {
+        List<Product> products = productService.getAllActiveProducts();
+        List<ProductResponse> fr= new ArrayList<ProductResponse>();
+        for(Product p: products){
+            fr.add(new ProductResponse(p));
+        }
+        return ResponseEntity.ok(fr);
     }
 
 
