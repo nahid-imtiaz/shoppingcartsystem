@@ -1,6 +1,6 @@
-package edu.miu.shoppingcartsystem.security.jwt;
+package edu.miu.shoppingcartsystem.service.security.jwt;
 
-import edu.miu.shoppingcartsystem.security.services.UserDetailsImpl;
+import edu.miu.shoppingcartsystem.service.security.services.UserDetailsImpl;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

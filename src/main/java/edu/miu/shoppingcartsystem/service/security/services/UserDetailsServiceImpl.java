@@ -1,4 +1,4 @@
-package edu.miu.shoppingcartsystem.security.services;
+package edu.miu.shoppingcartsystem.service.security.services;
 
 
 import edu.miu.shoppingcartsystem.model.User;
