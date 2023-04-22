@@ -72,7 +72,6 @@ public class WebSecurityConfig {
             .permitAll()
             .antMatchers(HttpMethod.GET, "/products/**").permitAll()
         .antMatchers("/orders/**").permitAll()
-            .antMatchers("/users/**").permitAll()
         .antMatchers(HttpMethod.GET, "/products/**").permitAll()
         .anyRequest().authenticated();
     
