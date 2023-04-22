@@ -5,6 +5,7 @@ import edu.miu.shoppingcartsystem.model.Vendor;
 import edu.miu.shoppingcartsystem.service.VendorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -18,26 +19,26 @@ public class VendorController {
     @Autowired
     private VendorService vendorService;
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Vendor>> getAllVendors() {
         List<Vendor> vendors = vendorService.getAllVendors();
         return ResponseEntity.ok(vendors);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(path="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Vendor> getVendorById(@PathVariable Long id) {
         Optional<Vendor> vendor = vendorService.getVendorById(id);
         return vendor.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     //@PreAuthorize("hasRole('VENDOR') or hasRole('ADMIN')")
     public ResponseEntity<Vendor> saveVendor(@RequestBody Vendor vendor) {
         Vendor savedVendor = vendorService.saveVendor(vendor);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedVendor);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(path="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
    // @PreAuthorize("hasRole('VENDOR') or hasRole('ADMIN')")
     public ResponseEntity<Vendor> updateVendor(@PathVariable Long id, @RequestBody Vendor vendor) {
         Optional<Vendor> existingVendor = vendorService.getVendorById(id);
