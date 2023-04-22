@@ -9,8 +9,8 @@ import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    @Query(value="select p.id,p.name, p.price from Product as p")
-    List<Product> findProduct();
+   // @Query(value="select p.id,p.name, p.price from Product as p")
+    //List<Product> findProduct();
 	
     List<Product> findAllByIsActive(boolean b);
 }
