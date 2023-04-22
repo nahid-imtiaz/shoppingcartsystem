@@ -51,7 +51,7 @@ public class OrderService {
                 total += (c.getQuantity() * c.getPrice());
         }
 
-        sbBody.append("<tr><td colspan='2'></td><td>"+total+"</td>").append("</tr></table>");
+        sbBody.append("<tr><td colspan='3'></td><td>"+total+"</td>").append("</tr></table>");
 
         sbBody.append("Thank you").append("\n")
                 .append("Easy store team");
