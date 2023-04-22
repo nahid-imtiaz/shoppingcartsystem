@@ -33,16 +33,31 @@ public class OrderService {
         String recipient = orderRequest.getUser().getEmail();
         String msgBody ="";
         String subject = "Your order has placed. Order Ref: "+ order.getOrderId();
-        String attachment="Dear "+ orderRequest.getUser().getUsername()+",";
 
-      //  List<CartItem> cartItems = cartItemRepository.
+        StringBuilder sbBody = new StringBuilder();
 
-        EmailDetails emailDetails = new EmailDetails(recipient,msgBody, subject, "");
+        sbBody.append("Dear "+ orderRequest.getUser().getUsername()+",\n")
+                 .append("Your order reference is: "+order.getOrderId()+"\n")
+                 .append("<table><tr>")
+                 .append("<td>Id</td><td>Name</td><td>Qty</td><td>Total</td></tr>");
 
+        List<CartItem> cartItems = cartItemRepository.findByOrderId(order.getOrderId().intValue());
+        int total = 0;
+        for (CartItem c:cartItems){
+            sbBody.append("<tr><td>"+c.getCartId()+"</td>")
+                    .append("<td>"+c.getProduct().getName()+"</td>")
+                    .append("<td>"+c.getQuantity()+"</td>")
+                    .append("<td>"+(c.getQuantity() * c.getPrice())+"</td></tr>");
+                total += (c.getQuantity() * c.getPrice());
+        }
+
+        sbBody.append("<tr><td colspan='2'></td><td>"+total+"</td>").append("</tr></table>");
+
+        sbBody.append("Thank you").append("\n")
+                .append("Easy store team");
+
+        EmailDetails emailDetails = new EmailDetails(recipient,sb.toString(), subject, "");
         emailService.sendSimpleMail(emailDetails);
-
-
-
         return order;
     }
 }
