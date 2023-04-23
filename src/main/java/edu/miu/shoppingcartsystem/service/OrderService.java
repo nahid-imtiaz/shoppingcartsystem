@@ -56,7 +56,7 @@ public class OrderService {
         sbBody.append("Thank you").append("\n")
                 .append("Easy store team");
 
-        EmailDetails emailDetails = new EmailDetails(recipient,sb.toString(), subject, "");
+        EmailDetails emailDetails = new EmailDetails(recipient,sbBody.toString(), subject, "");
         emailService.sendSimpleMail(emailDetails);
         return order;
     }
