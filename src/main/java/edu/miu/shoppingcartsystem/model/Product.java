@@ -1,5 +1,7 @@
 package edu.miu.shoppingcartsystem.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -13,16 +15,27 @@ public class Product {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "price")
-    private Double price;
+    private Double sellingPrice;
+
+    private Double actualPrice;
+
+    private int quantity;
+
+    private Boolean isActive;
+
+    private String image;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
+    //@JsonIgnore
     private Category category;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
+
+//    private long vendorId;
 
     public Long getId() {
         return id;
@@ -40,12 +53,44 @@ public class Product {
         this.name = name;
     }
 
-    public Double getPrice() {
-        return price;
+    public Double getSellingPrice() {
+        return sellingPrice;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
+    public void setSellingPrice(Double sellingPrice) {
+        this.sellingPrice = sellingPrice;
+    }
+
+    public Double getActualPrice() {
+        return actualPrice;
+    }
+
+    public void setActualPrice(Double actualPrice) {
+        this.actualPrice = actualPrice;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public Category getCategory() {
@@ -63,5 +108,15 @@ public class Product {
     public void setUser(User user) {
         this.user = user;
     }
+
+//    public long getVendorId() {
+//        return vendorId;
+//    }
+
+//    public void setVendorId(long vendorId) {
+//        this.vendorId = vendorId;
+//    }
+
+
 }
 

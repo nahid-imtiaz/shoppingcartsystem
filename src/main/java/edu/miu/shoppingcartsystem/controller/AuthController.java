@@ -1,6 +1,7 @@
 package edu.miu.shoppingcartsystem.controller;
 
 import edu.miu.shoppingcartsystem.model.ERole;
+import edu.miu.shoppingcartsystem.model.EmailDetails;
 import edu.miu.shoppingcartsystem.model.Role;
 import edu.miu.shoppingcartsystem.model.User;
 import edu.miu.shoppingcartsystem.payload.request.LoginRequest;
@@ -9,6 +10,7 @@ import edu.miu.shoppingcartsystem.payload.response.JwtResponse;
 import edu.miu.shoppingcartsystem.payload.response.MessageResponse;
 import edu.miu.shoppingcartsystem.repository.RoleRepository;
 import edu.miu.shoppingcartsystem.repository.UserRepository;
+import edu.miu.shoppingcartsystem.service.EmailService;
 import edu.miu.shoppingcartsystem.service.security.jwt.JwtUtils;
 import edu.miu.shoppingcartsystem.service.security.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +29,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+
+  boolean isVendor=false;
   @Autowired
   AuthenticationManager authenticationManager;
 
@@ -45,6 +49,10 @@ public class AuthController {
 
   @Autowired
   JwtUtils jwtUtils;
+
+  @Autowired
+  private EmailService emailService;
+
 
   @PostMapping("/signin")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -69,6 +77,7 @@ public class AuthController {
 
   @PostMapping("/signup")
   public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+    isVendor=false;
     if (userRepository.existsByUsername(signUpRequest.getUsername())) {
       return ResponseEntity
           .badRequest()
@@ -88,6 +97,7 @@ public class AuthController {
 
     Set<String> strRoles = signUpRequest.getRole();
     Set<Role> roles = new HashSet<>();
+    boolean isVendorAdmin;
 
     if (strRoles == null) {
       Role userRole = roleRepository.findByName(ERole.ROLE_USER)
@@ -106,6 +116,7 @@ public class AuthController {
           Role modRole = roleRepository.findByName(ERole.ROLE_VENDOR)
               .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
           roles.add(modRole);
+          isVendor=true;
 
           break;
         default:
@@ -118,6 +129,22 @@ public class AuthController {
 
     user.setRoles(roles);
     userRepository.save(user);
+
+    if(isVendor){
+//      private String recipient;
+//      private String msgBody;
+//      private String subject;
+//      private String attachment;
+      StringBuilder sb= new StringBuilder();
+      sb.append("Welcome "+user.getUsername() ).append(",\n").
+              append("You have been added as a Vendor admin to Easy store.").
+              append("To Login Credentials are as follows: \n").
+              append("Username: "+user.getUsername()).append("\n").
+              append("Password: "+signUpRequest.getPassword());
+
+      EmailDetails ed= new EmailDetails(signUpRequest.getEmail(), sb.toString(), "Welcome to easy store", "");
+      emailService.sendSimpleMail(ed);
+    }
 
     return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
   }

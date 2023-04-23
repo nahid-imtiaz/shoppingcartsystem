@@ -6,6 +6,7 @@ import edu.miu.shoppingcartsystem.service.security.services.UserDetailsServiceIm
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -19,10 +20,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableGlobalMethodSecurity(
-    // securedEnabled = true,
-    // jsr250Enabled = true,
     prePostEnabled = true)
-public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig {
   @Autowired
   UserDetailsServiceImpl userDetailsService;
 
@@ -34,11 +33,7 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
     return new AuthTokenFilter();
   }
 
-//  @Override
-//  public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-//    authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-//  }
-  
+
   @Bean
   public DaoAuthenticationProvider authenticationProvider() {
       DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -49,12 +44,7 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
       return authProvider;
   }
 
-//  @Bean
-//  @Override
-//  public AuthenticationManager authenticationManagerBean() throws Exception {
-//    return super.authenticationManagerBean();
-//  }
-  
+
   @Bean
   public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
     return authConfig.getAuthenticationManager();
@@ -65,18 +55,7 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
     return new BCryptPasswordEncoder();
   }
 
-//  @Override
-//  protected void configure(HttpSecurity http) throws Exception {
-//    http.cors().and().csrf().disable()
-//      .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-//      .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-//      .authorizeRequests().antMatchers("/api/auth/**").permitAll()
-//      .antMatchers("/api/test/**").permitAll()
-//      .anyRequest().authenticated();
-//
-//    http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-//  }
-  
+
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.cors().and().csrf().disable()
@@ -86,7 +65,19 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
             .antMatchers("/cartItem/**").permitAll()
             .antMatchers("/orders/**").permitAll()
             //.antMatchers("/api/test/**").permitAll()
+        .antMatchers("/api/test/**").permitAll()
 
+
+            .antMatchers("/v2/api-docs",
+                    "/swagger-resources/**",
+                    "/swagger-ui/**"
+            )
+            .permitAll()
+            .antMatchers(HttpMethod.GET, "/products/**").permitAll()
+        .antMatchers("/orders/**").permitAll()
+        .antMatchers(HttpMethod.GET, "/products/**").permitAll()
+            .antMatchers("/pdf/**").permitAll()
+            .antMatchers("/vendors/**").permitAll()
         .anyRequest().authenticated();
     
     http.authenticationProvider(authenticationProvider());
