@@ -15,6 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/vendors")
+@CrossOrigin
 public class VendorController {
     @Autowired
     private VendorService vendorService;
