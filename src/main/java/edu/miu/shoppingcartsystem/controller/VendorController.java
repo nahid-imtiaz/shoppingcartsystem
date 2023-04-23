@@ -41,7 +41,7 @@ public class VendorController {
     public ResponseEntity<Vendor> updateVendor(@PathVariable Long id, @RequestBody Vendor vendor) {
         Optional<Vendor> existingVendor = vendorService.getVendorById(id);
         if (existingVendor.isPresent()) {
-            //vendor.setVendorID(id);
+            vendor.setVendorID(id);
             Vendor updatedVendor = vendorService.saveVendor(vendor);
             return ResponseEntity.ok(updatedVendor);
         } else {
