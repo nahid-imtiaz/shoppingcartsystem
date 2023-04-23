@@ -50,7 +50,7 @@ public class ReportService {
         return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF).body(data);
     }
 
-    public ResponseEntity<byte[]> downloadInvoice2() throws JRException, IOException {
+    /*public ResponseEntity<byte[]> downloadInvoice2() throws JRException, IOException {
 
         // List<Product> products = productRepository.findAll();
 
@@ -72,6 +72,6 @@ public class ReportService {
         headers.add("Content-Disposition", "inline; filename=report.pdf");
 
         return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF).body(data);
-    }
+    }*/
 
 }

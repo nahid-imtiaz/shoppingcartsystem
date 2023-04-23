@@ -1,15 +1,15 @@
 package edu.miu.shoppingcartsystem.payload.request;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductDTO {
     int id;
     String name;
-    Double price;
+    Double sellingPrice;
 }

@@ -1,13 +1,10 @@
 package edu.miu.shoppingcartsystem.controller;
-
-import edu.miu.shoppingcartsystem.model.Product;
 import edu.miu.shoppingcartsystem.model.Vendor;
 import edu.miu.shoppingcartsystem.service.VendorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,7 +37,7 @@ public class VendorController {
     }
 
     @PutMapping(path="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-   // @PreAuthorize("hasRole('VENDOR') or hasRole('ADMIN')")
+    // @PreAuthorize("hasRole('VENDOR') or hasRole('ADMIN')")
     public ResponseEntity<Vendor> updateVendor(@PathVariable Long id, @RequestBody Vendor vendor) {
         Optional<Vendor> existingVendor = vendorService.getVendorById(id);
         if (existingVendor.isPresent()) {
