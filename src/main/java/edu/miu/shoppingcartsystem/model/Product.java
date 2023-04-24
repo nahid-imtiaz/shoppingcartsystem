@@ -1,10 +1,15 @@
 package edu.miu.shoppingcartsystem.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import edu.miu.shoppingcartsystem.payload.request.CategorySaleReportDTO;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "products")
 public class Product {
 
@@ -117,6 +122,11 @@ public class Product {
 //        this.vendorId = vendorId;
 //    }
 
+    public Product(CategorySaleReportDTO categorySaleReportDTO){
+        this.name=categorySaleReportDTO.getName();
+        this.quantity=(int)categorySaleReportDTO.getTotal_quantity();
+        this.sellingPrice=categorySaleReportDTO.getTotal_price();
+    }
 
 }
 

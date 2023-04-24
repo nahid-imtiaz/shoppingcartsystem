@@ -1,6 +1,6 @@
 package edu.miu.shoppingcartsystem.service;
 
-import edu.miu.shoppingcartsystem.model.Product;
+import edu.miu.shoppingcartsystem.payload.request.CategorySaleReportDTO;
 import edu.miu.shoppingcartsystem.payload.request.ProductDTO;
 import edu.miu.shoppingcartsystem.repository.ProductRepository;
 import net.sf.jasperreports.engine.*;
@@ -26,52 +26,40 @@ public class ReportService {
     private ProductRepository productRepository;
     @Autowired
     private ModelMapper modelMapper;
-    public ResponseEntity<byte[]> downloadInvoice1() throws JRException, IOException {
-
-       // List<Product> products = productRepository.findAll();
+    public ResponseEntity<byte[]> downloadProductReport() throws JRException, IOException {
 
         List<ProductDTO> products=productRepository.findAll().stream()
                 .map(p -> modelMapper.map(p, ProductDTO.class))
                 .collect(Collectors.toList());
-       //List<ProductDTO> products = productRepository.findProduct();
         JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(products);
         Map<String, Object> parameters = new HashMap<>();
 
-        File file = ResourceUtils.getFile("classpath:report.jrxml");
+        File file = ResourceUtils.getFile("classpath:productReport.jrxml");
         JasperReport compileReport = JasperCompileManager.compileReport(file.getAbsolutePath());
         JasperPrint jasperPrint = JasperFillManager.fillReport(compileReport, parameters, beanCollectionDataSource);
         byte data[] = JasperExportManager.exportReportToPdf(jasperPrint);
 
-        //System.err.println(data);
-
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "inline; filename=report.pdf");
+        headers.add("Content-Disposition", "inline; filename=productReport.pdf");
 
         return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF).body(data);
     }
 
-    /*public ResponseEntity<byte[]> downloadInvoice2() throws JRException, IOException {
+    public ResponseEntity<byte[]> downloadCategoryWiseReport() throws JRException, IOException {
 
-        // List<Product> products = productRepository.findAll();
-
-        List<ProductDTO> products1=productRepository.findAll().stream()
-                .map(p -> modelMapper.map(p, ProductDTO.class))
-                .collect(Collectors.toList());
-        //List<ProductDTO> products = productRepository.findProduct();
-        JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(products1);
+        List<CategorySaleReportDTO> categorySaleReport=productRepository.getCategorySaleReport();
+        JRBeanCollectionDataSource beanCollectionSaleReport = new JRBeanCollectionDataSource(categorySaleReport);
         Map<String, Object> parameters = new HashMap<>();
 
-        File file = ResourceUtils.getFile("classpath:report.jrxml");
-        JasperReport compileReport = JasperCompileManager.compileReport(file.getAbsolutePath());
-        JasperPrint jasperPrint = JasperFillManager.fillReport(compileReport, parameters, beanCollectionDataSource);
-        byte data[] = JasperExportManager.exportReportToPdf(jasperPrint);
-
-        //System.err.println(data);
+        File file = ResourceUtils.getFile("classpath:csreport.jrxml");
+        JasperReport compileSaleReport = JasperCompileManager.compileReport(file.getAbsolutePath());
+        JasperPrint jasperPrint1 = JasperFillManager.fillReport(compileSaleReport, parameters, beanCollectionSaleReport);
+        byte data[] = JasperExportManager.exportReportToPdf(jasperPrint1);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "inline; filename=report.pdf");
+        headers.add("Content-Disposition", "inline; filename=cs-report.pdf");
 
         return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF).body(data);
-    }*/
+    }
 
 }
