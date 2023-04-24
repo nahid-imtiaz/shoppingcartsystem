@@ -6,6 +6,7 @@ import lombok.*;
 @NoArgsConstructor
 @Setter
 @Getter
+@ToString
 public class AddressRequest {
 
     private String address;
