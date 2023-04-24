@@ -4,6 +4,7 @@ import edu.miu.shoppingcartsystem.model.Category;
 import edu.miu.shoppingcartsystem.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -19,28 +20,28 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('VENDOR') or hasRole('ADMIN') ")
     public ResponseEntity<List<Category>> getAllCategories() {
         List<Category> categories = categoryService.getAllCategories();
         return ResponseEntity.ok(categories);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('VENDOR') or hasRole('ADMIN')")
     public ResponseEntity<Category> getCategoryById(@PathVariable Long id) {
         Optional<Category> category = categoryService.getCategoryById(id);
         return category.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('VENDOR') or hasRole('ADMIN')")
     public ResponseEntity<Category> saveCategory(@RequestBody Category category) {
         Category savedCategory = categoryService.saveCategory(category);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedCategory);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('VENDOR') or hasRole('ADMIN')")
     public ResponseEntity<Category> updateCategory(@PathVariable Long id, @RequestBody Category category) {
         Optional<Category> existingCategory = categoryService.getCategoryById(id);
@@ -53,7 +54,7 @@ public class CategoryController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('VENDOR') or hasRole('ADMIN')")
     public ResponseEntity<Void> deleteCategoryById(@PathVariable Long id) {
         Optional<Category> category = categoryService.getCategoryById(id);

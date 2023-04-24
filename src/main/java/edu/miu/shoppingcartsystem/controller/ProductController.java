@@ -6,6 +6,7 @@ import edu.miu.shoppingcartsystem.payload.response.ProductResponse;
 import edu.miu.shoppingcartsystem.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN') or hasRole('VENDOR')")
     public ResponseEntity<List<ProductResponse>> getAllProducts() {
         List<Product> products = productService.getAllProducts();
@@ -31,7 +32,7 @@ public class ProductController {
         return ResponseEntity.ok(fr);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProductResponse> getProductById(@PathVariable Long id) {
         Optional<Product> product = productService.getProductById(id);
         if (product.isPresent()) {
@@ -42,7 +43,7 @@ public class ProductController {
         }
     }
 
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('VENDOR') or hasRole('ADMIN')")
     public ResponseEntity<ProductResponse> saveProduct(@RequestBody Product product) {
         product.setActive(false);
@@ -55,7 +56,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new ProductResponse(savedProduct));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('VENDOR') or hasRole('ADMIN')")
     public ResponseEntity<ProductResponse> updateProduct(@PathVariable Long id, @RequestBody Product product) {
         Optional<Product> existingProduct = productService.getProductById(id);
@@ -68,7 +69,7 @@ public class ProductController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('VENDOR') or hasRole('ADMIN')")
     public ResponseEntity<Void> deleteProductById(@PathVariable Long id) {
         Optional<Product> product1 = productService.getProductById(id);
@@ -80,7 +81,7 @@ public class ProductController {
         }
     }
 
-    @PutMapping("/activateProduct/{id}")
+    @PutMapping(value = "/activateProduct/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
     public Boolean activateProduct(@PathVariable Long id){
         Optional<Product> product1 = productService.getProductById(id);
@@ -93,7 +94,7 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/activeProducts")
+    @GetMapping(value = "/activeProducts", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ProductResponse>> getAllActiveProducts() {
         List<Product> products = productService.getAllActiveProducts();
         List<ProductResponse> fr= new ArrayList<ProductResponse>();
@@ -104,7 +105,7 @@ public class ProductController {
     }
 
 
-    @PutMapping("/deactivateProduct/{id}")
+    @PutMapping(value = "/deactivateProduct/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
     public Boolean deactivateProduct(@PathVariable Long id){
         Optional<Product> product1 = productService.getProductById(id);
