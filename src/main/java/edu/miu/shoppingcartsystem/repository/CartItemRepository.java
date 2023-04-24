@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface CartItemRepository extends JpaRepository<CartItem, Integer> {
     @Query("SELECT c FROM CartItem c WHERE c.order.orderId = :orderId")
-    List<CartItem> findByOrderId(int orderId);
+    List<CartItem> findByOrderId(long orderId);
 
 }

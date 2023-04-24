@@ -14,7 +14,7 @@ import java.util.List;
 @Getter
 public class OrderRequest {
     private AddressRequest address;
-    private String phone;
+    private String email;
     private double totalPrice;
     private User user;
     private List<CartItem> cartItemList;

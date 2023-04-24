@@ -3,14 +3,18 @@ package edu.miu.shoppingcartsystem.service;
 import edu.miu.shoppingcartsystem.model.CartItem;
 import edu.miu.shoppingcartsystem.model.EmailDetails;
 import edu.miu.shoppingcartsystem.model.Order;
+import edu.miu.shoppingcartsystem.model.User;
 import edu.miu.shoppingcartsystem.payload.request.AddressRequest;
 import edu.miu.shoppingcartsystem.payload.request.OrderRequest;
 import edu.miu.shoppingcartsystem.repository.CartItemRepository;
 import edu.miu.shoppingcartsystem.repository.OrderRepository;
+import edu.miu.shoppingcartsystem.repository.UserRepository;
+import edu.miu.shoppingcartsystem.service.security.LoggedInUserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderService {
@@ -21,16 +25,29 @@ public class OrderService {
     CartItemRepository cartItemRepository;
     @Autowired
     EmailService emailService;
+
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    LoggedInUserUtil loggedInUserUtil;
     public Order createOrder(OrderRequest orderRequest){
 
         AddressRequest ar = orderRequest.getAddress();
         StringBuilder sb = new StringBuilder();
         sb.append(ar.getAddress()).append(", " ).append(ar.getCity()).append(", ").append(ar.getState()).append(", ").append(ar.getCountry()).append(", ").append(ar.getZipCode());
-        Order order = new Order(sb.toString(), orderRequest.getPhone(),orderRequest.getTotalPrice(),orderRequest.getUser());
+        Order order = new Order(sb.toString(), orderRequest.getEmail(),orderRequest.getTotalPrice(),orderRequest.getUser());
         order = orderRepository.save(order);
 
         // Need to send email to the user to notify user
-        String recipient = orderRequest.getUser().getEmail();
+//        Optional<User> user = userRepository.findById(orderRequest.getUser().getId());
+        Optional<User> user = loggedInUserUtil.getCurrentUser();
+        String recipient = "";
+        if(user.isPresent()){
+            recipient   = user.get().getEmail();
+        }else{
+            recipient= orderRequest.getEmail();
+        }
+
         String msgBody ="";
         String subject = "Your order has placed. Order Ref: "+ order.getOrderId();
 
@@ -41,7 +58,7 @@ public class OrderService {
                  .append("<table><tr>")
                  .append("<td>Id</td><td>Name</td><td>Qty</td><td>Total</td></tr>");
 
-        List<CartItem> cartItems = cartItemRepository.findByOrderId(order.getOrderId().intValue());
+        List<CartItem> cartItems = cartItemRepository.findByOrderId(order.getOrderId().longValue());
         int total = 0;
         for (CartItem c:cartItems){
             sbBody.append("<tr><td>"+c.getCartId()+"</td>")

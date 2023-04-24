@@ -1,6 +1,9 @@
 package edu.miu.shoppingcartsystem.payload.response;
 
-public class MessageResponse {
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
+public class MessageResponse{
   private String message;
 
   public MessageResponse(String message) {
