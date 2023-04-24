@@ -57,8 +57,13 @@ public class OrderService {
         String subject = "Your order has placed. Order Ref: "+ order.getOrderId();
 
         StringBuilder sbBody = new StringBuilder();
+        String name_u = "Guest ";
 
-        sbBody.append("Dear "+ u== null? "Guest ": u.getUsername() +",\n")
+        if(u != null){
+            name_u=u.getUsername();
+        }
+
+        sbBody.append("Dear "+ name_u +",\n")
                  .append("Your order reference is: "+order.getOrderId()+"\n")
                  .append("<table><tr>")
                  .append("<td>Id</td><td>Name</td><td>Qty</td><td>Total</td></tr>");
@@ -78,7 +83,7 @@ public class OrderService {
         sbBody.append("Thank you").append("\n")
                 .append("Easy store team");
 
-        EmailDetails emailDetails = new EmailDetails(recipient,sb.toString(), subject, "");
+        EmailDetails emailDetails = new EmailDetails(recipient,sbBody.toString(), subject, "");
         emailService.sendSimpleMail(emailDetails);
         return order;
     }

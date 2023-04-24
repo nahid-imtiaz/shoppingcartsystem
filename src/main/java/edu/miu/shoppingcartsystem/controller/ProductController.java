@@ -45,6 +45,7 @@ public class ProductController {
     @PostMapping
     @PreAuthorize("hasRole('VENDOR') or hasRole('ADMIN')")
     public ResponseEntity<ProductResponse> saveProduct(@RequestBody Product product) {
+        product.setActive(false);
         Product savedProduct = productService.saveProduct(product);
         if (savedProduct == null){
             ResponseEntity
