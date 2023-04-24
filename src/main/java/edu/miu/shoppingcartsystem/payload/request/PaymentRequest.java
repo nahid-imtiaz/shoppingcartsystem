@@ -1,19 +1,20 @@
 package edu.miu.shoppingcartsystem.payload.request;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
-
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
 @Getter
-public class PaymentInfo implements Serializable {
-//    private String cardType;
+@Setter
+public class PaymentRequest implements Serializable {
     private String cardNumber;
     private String nameOnCard;
-    private int cvv;
     private String expiryDate;
+    private int cvv;
     private int amount;
 
 }
