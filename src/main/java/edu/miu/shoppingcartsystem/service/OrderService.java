@@ -34,26 +34,31 @@ public class OrderService {
 
         AddressRequest ar = orderRequest.getAddress();
         StringBuilder sb = new StringBuilder();
+
+        Optional<User> user = loggedInUserUtil.getCurrentUser();
+        String recipient = "";
+        User u = null;
+        if(user.isPresent()){
+            recipient   = user.get().getEmail();
+            u= user.get();
+        }else{
+            recipient= orderRequest.getEmail();
+        }
+
         sb.append(ar.getAddress()).append(", " ).append(ar.getCity()).append(", ").append(ar.getState()).append(", ").append(ar.getCountry()).append(", ").append(ar.getZipCode());
-        Order order = new Order(sb.toString(), orderRequest.getEmail(),orderRequest.getTotalPrice(),orderRequest.getUser());
+        Order order = new Order(sb.toString(), orderRequest.getEmail(),orderRequest.getTotalPrice(),u);
         order = orderRepository.save(order);
 
         // Need to send email to the user to notify user
 //        Optional<User> user = userRepository.findById(orderRequest.getUser().getId());
-        Optional<User> user = loggedInUserUtil.getCurrentUser();
-        String recipient = "";
-        if(user.isPresent()){
-            recipient   = user.get().getEmail();
-        }else{
-            recipient= orderRequest.getEmail();
-        }
+
 
         String msgBody ="";
         String subject = "Your order has placed. Order Ref: "+ order.getOrderId();
 
         StringBuilder sbBody = new StringBuilder();
 
-        sbBody.append("Dear "+ orderRequest.getUser().getUsername()+",\n")
+        sbBody.append("Dear "+ u== null? "Guest ": u.getUsername() +",\n")
                  .append("Your order reference is: "+order.getOrderId()+"\n")
                  .append("<table><tr>")
                  .append("<td>Id</td><td>Name</td><td>Qty</td><td>Total</td></tr>");
