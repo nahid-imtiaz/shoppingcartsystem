@@ -26,6 +26,6 @@ public class LoggedInUserUtil {
             Optional<User> user = Optional.ofNullable(userService.getCurrentUser(currentUserName));
             return user;
         }
-        return null;
+        return Optional.empty();
     }
 }

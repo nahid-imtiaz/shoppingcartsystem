@@ -8,6 +8,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Setter
 @Getter
+@ToString
 public class PaymentInfo implements Serializable {
 //    private String cardType;
     private String cardNumber;

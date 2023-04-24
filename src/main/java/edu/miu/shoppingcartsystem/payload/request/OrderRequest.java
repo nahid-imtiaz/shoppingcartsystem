@@ -2,16 +2,15 @@ package edu.miu.shoppingcartsystem.payload.request;
 
 import edu.miu.shoppingcartsystem.model.CartItem;
 import edu.miu.shoppingcartsystem.model.User;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
 import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
+@ToString
 public class OrderRequest {
     private AddressRequest address;
     private String email;

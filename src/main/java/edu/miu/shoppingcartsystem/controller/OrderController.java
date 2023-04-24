@@ -30,7 +30,8 @@ public class OrderController {
 
     @PostMapping(value ="/placeOrder", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MessageResponse> placeOrder(@RequestBody OrderRequest orderRequest) {
-
+        System.out.println(orderRequest);
+        System.out.println(orderRequest.getPaymentInfo());
         List<CartItem> cList = orderRequest.getCartItemList();
         double sum = cList.stream().mapToDouble(c->c.getPrice() * c.getQuantity()).sum();
         //make rest call to payment getway with the payment info
