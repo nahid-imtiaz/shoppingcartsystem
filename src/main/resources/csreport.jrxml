@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.1.final using JasperReports Library version 6.20.1-7584acb244139816654f64e2fd57a00d3e31921e  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="categoryReport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="712d1bd4-e331-429f-b769-d9d4e9f65918">
+    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+    <queryString>
+        <![CDATA[]]>
+    </queryString>
+    <field name="name" class="java.lang.String"/>
+    <field name="total_quantity" class="java.lang.Long"/>
+    <field name="total_price" class="java.lang.Double"/>
+    <background>
+        <band splitType="Stretch"/>
+    </background>
+    <title>
+        <band height="79" splitType="Stretch">
+            <staticText>
+                <reportElement mode="Opaque" x="0" y="0" width="555" height="79" forecolor="#416CFA" backcolor="#6FEDED" uuid="553d6e89-e805-4d00-8d21-e1a6e8cbec97"/>
+                <textElement textAlignment="Center">
+                    <font size="26"/>
+                </textElement>
+                <text><![CDATA[Category Wise Report]]></text>
+            </staticText>
+            <textField pattern="MMMMM dd, yyyy">
+                <reportElement x="254" y="37" width="100" height="30" forecolor="#DE1E1B" uuid="b12b11ce-066d-4b21-87dc-fe508c9f465e"/>
+                <textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+            </textField>
+        </band>
+    </title>
+    <columnHeader>
+        <band height="47" splitType="Stretch">
+            <staticText>
+                <reportElement x="80" y="10" width="100" height="30" uuid="2d597a98-2849-40e6-bc46-e08d73de943b"/>
+                <textElement textAlignment="Center">
+                    <font size="18"/>
+                </textElement>
+                <text><![CDATA[Category Name]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="180" y="10" width="140" height="30" uuid="57c44974-9902-4997-9459-777b95d104be"/>
+                <textElement textAlignment="Center">
+                    <font size="18"/>
+                </textElement>
+                <text><![CDATA[Total Quantity]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="320" y="10" width="160" height="30" uuid="811b436d-409d-4fd0-ba50-d78112bd81ef"/>
+                <textElement textAlignment="Center">
+                    <font size="18"/>
+                </textElement>
+                <text><![CDATA[Total Selling Price]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+    <detail>
+        <band height="50" splitType="Stretch">
+            <textField>
+                <reportElement x="80" y="10" width="100" height="30" uuid="b95a79f2-3f1a-48ea-889c-8892371adc0d"/>
+                <textElement textAlignment="Center"/>
+                <textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="220" y="10" width="100" height="30" uuid="1bc993a3-201b-4856-be7b-1c8a6287b01b"/>
+                <textElement textAlignment="Center"/>
+                <textFieldExpression><![CDATA[$F{total_quantity}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="330" y="10" width="100" height="30" uuid="506d4abd-f86c-4b0e-89f1-c99be43d1491"/>
+                <textElement textAlignment="Center"/>
+                <textFieldExpression><![CDATA[$F{total_price}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+    <columnFooter>
+        <band height="45" splitType="Stretch"/>
+    </columnFooter>
+    <summary>
+        <band height="42" splitType="Stretch"/>
+    </summary>
+</jasperReport>

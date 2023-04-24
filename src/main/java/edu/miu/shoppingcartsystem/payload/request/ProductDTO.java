@@ -9,7 +9,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductDTO {
-    int id;
-    String name;
-    Double sellingPrice;
+    private String name;
+    private int quantity;
+    private Double actualPrice;
+    private Double sellingPrice;
 }
