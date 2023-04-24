@@ -14,6 +14,7 @@ import edu.miu.shoppingcartsystem.service.EmailService;
 import edu.miu.shoppingcartsystem.service.security.jwt.JwtUtils;
 import edu.miu.shoppingcartsystem.service.security.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -54,7 +55,7 @@ public class AuthController {
   private EmailService emailService;
 
 
-  @PostMapping("/signin")
+  @PostMapping(value = "/signin", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
     Authentication authentication = authenticationManager.authenticate(
@@ -75,7 +76,7 @@ public class AuthController {
                          roles));
   }
 
-  @PostMapping("/signup")
+  @PostMapping(value = "/signup", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
     isVendor=false;
     if (userRepository.existsByUsername(signUpRequest.getUsername())) {

@@ -51,7 +51,7 @@ public class VendorController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/{id}")
+    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> deleteVendorById(@PathVariable Long id) {
         Optional<Vendor> vendor1 = vendorService.getVendorById(id);
         if (vendor1.isPresent()) {
