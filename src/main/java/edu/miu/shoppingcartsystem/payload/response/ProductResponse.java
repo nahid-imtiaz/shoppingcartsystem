@@ -36,5 +36,5 @@ public class ProductResponse {
     private String image;
     private Long categoryId;
     private String categoryName;
-    private Long userId;
+    private Long userId=-1L;
 }
