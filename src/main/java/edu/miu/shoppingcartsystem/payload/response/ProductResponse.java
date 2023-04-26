@@ -16,6 +16,10 @@ public class ProductResponse {
         this.sellingPrice = p.getSellingPrice();
         this.quantity = p.getQuantity();
         this.isActive = p.getActive();
+        if(p.getUser()!= null){
+            this.userId=p.getUser().getId();
+        }
+
 
         if(p.getCategory() != null){
             this.categoryId = p.getCategory().getId();
@@ -32,4 +36,5 @@ public class ProductResponse {
     private String image;
     private Long categoryId;
     private String categoryName;
+    private Long userId=-1L;
 }
